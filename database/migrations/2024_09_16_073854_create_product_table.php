@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('price', 8, 2); // Added price column
             $table->text('paragraph'); // Added paragraph column
             $table->string('catalog'); // Added catalog column
+            $table->string('image'); // <-- Add this line
             $table->timestamps();
         });
     }
