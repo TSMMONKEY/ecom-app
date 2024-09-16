@@ -3,11 +3,11 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Route::get('/home', function () {
+Route::get('/', function () {
     return view('pages.home');
 });
 
@@ -16,8 +16,9 @@ Route::get('/single-product', function () {
 })->name(('product.name'));
 
 Route::get('/dashboard', function () {
+    dd(auth()->user(), auth()->check(), request()->user(), session()->all());
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
