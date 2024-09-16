@@ -15,10 +15,11 @@ Route::get('/single-product', function () {
     return view('pages.single-product');
 })->name(('product.name'));
 
-Route::get('/dashboard', function () {
-    dd(auth()->user(), auth()->check(), request()->user(), session()->all());
+Route::get('/home', function () {
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware(['auth'])->name('home');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
