@@ -106,13 +106,10 @@
                                                     <ul class="dropdown-menu px-2 py-3 ms-sm-n4 ms-n5"
                                                         aria-labelledby="dropdownTable">
                                                         <li><a class="dropdown-item border-radius-md"
-                                                                href="javascript:;">Action</a></li>
+                                                                href="javascript:;">Edit</a></li>
                                                         <li><a class="dropdown-item border-radius-md"
-                                                                href="javascript:;">Another action</a>
+                                                                href="javascript:;">Delete</a>
                                                         </li>
-                                                        <li><a class="dropdown-item border-radius-md"
-                                                                href="javascript:;">Something else
-                                                                here</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
