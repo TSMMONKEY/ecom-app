@@ -6,34 +6,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="images/icons/favicon.png" />
+    <link rel="icon" type="image/png" href="/images/icons/favicon.png" />
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" type="text/css" href="/fonts/iconic/css/material-design-iconic-font.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/linearicons-v1.0.0/icon-font.min.css">
+    <link rel="stylesheet" type="text/css" href="/fonts/linearicons-v1.0.0/icon-font.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+    <link rel="stylesheet" type="text/css" href="/vendor/css-hamburgers/hamburgers.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+    <link rel="stylesheet" type="text/css" href="/vendor/animsition/css/animsition.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="/vendor/daterangepicker/daterangepicker.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/slick/slick.css">
+    <link rel="stylesheet" type="text/css" href="/vendor/slick/slick.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/MagnificPopup/magnific-popup.css">
+    <link rel="stylesheet" type="text/css" href="/vendor/MagnificPopup/magnific-popup.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="/vendor/perfect-scrollbar/perfect-scrollbar.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="css/util.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/util.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
     <!--===============================================================================================-->
 </head>
 
@@ -75,7 +75,7 @@
 
                     <!-- Logo desktop -->
                     <a href="/" class="logo">
-                        <img src="images/icons/logo-01.png" alt="IMG-LOGO">
+                        <img src="/images/icons/logo-01.png" alt="IMG-LOGO">
                     </a>
 
                     <!-- Menu desktop -->
@@ -135,7 +135,7 @@
         <div class="wrap-header-mobile">
             <!-- Logo moblie -->
             <div class="logo-mobile">
-                <a href="/"><img src="images/icons/logo-01.png" alt="IMG-LOGO"></a>
+                <a href="/"><img src="/images/icons/logo-01.png" alt="IMG-LOGO"></a>
             </div>
 
             <!-- Icon header -->
@@ -234,7 +234,7 @@
         <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
             <div class="container-search-header">
                 <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-                    <img src="images/icons/icon-close2.png" alt="CLOSE">
+                    <img src="/images/icons/icon-close2.png" alt="CLOSE">
                 </button>
 
                 <form class="wrap-search-header flex-w p-l-15">
@@ -266,7 +266,7 @@
                 <ul class="header-cart-wrapitem w-full">
                     <li class="header-cart-item flex-w flex-t m-b-12">
                         <div class="header-cart-item-img">
-                            <img src="images/item-cart-01.jpg" alt="IMG">
+                            <img src="/images/item-cart-01.jpg" alt="IMG">
                         </div>
 
                         <div class="header-cart-item-txt p-t-8">
@@ -282,7 +282,7 @@
 
                     <li class="header-cart-item flex-w flex-t m-b-12">
                         <div class="header-cart-item-img">
-                            <img src="images/item-cart-02.jpg" alt="IMG">
+                            <img src="/images/item-cart-02.jpg" alt="IMG">
                         </div>
 
                         <div class="header-cart-item-txt p-t-8">
@@ -298,7 +298,7 @@
 
                     <li class="header-cart-item flex-w flex-t m-b-12">
                         <div class="header-cart-item-img">
-                            <img src="images/item-cart-03.jpg" alt="IMG">
+                            <img src="/images/item-cart-03.jpg" alt="IMG">
                         </div>
 
                         <div class="header-cart-item-txt p-t-8">
@@ -453,23 +453,23 @@
             <div class="p-t-40">
                 <div class="flex-c-m flex-w p-b-18">
                     <a href="#" class="m-all-1">
-                        <img src="images/icons/icon-pay-01.png" alt="ICON-PAY">
+                        <img src="/images/icons/icon-pay-01.png" alt="ICON-PAY">
                     </a>
 
                     <a href="#" class="m-all-1">
-                        <img src="images/icons/icon-pay-02.png" alt="ICON-PAY">
+                        <img src="/images/icons/icon-pay-02.png" alt="ICON-PAY">
                     </a>
 
                     <a href="#" class="m-all-1">
-                        <img src="images/icons/icon-pay-03.png" alt="ICON-PAY">
+                        <img src="/images/icons/icon-pay-03.png" alt="ICON-PAY">
                     </a>
 
                     <a href="#" class="m-all-1">
-                        <img src="images/icons/icon-pay-04.png" alt="ICON-PAY">
+                        <img src="/images/icons/icon-pay-04.png" alt="ICON-PAY">
                     </a>
 
                     <a href="#" class="m-all-1">
-                        <img src="images/icons/icon-pay-05.png" alt="ICON-PAY">
+                        <img src="/images/icons/icon-pay-05.png" alt="ICON-PAY">
                     </a>
                 </div>
 
@@ -503,7 +503,7 @@
         <div class="container">
             <div class="bg0 p-t-60 p-b-30 p-lr-15-lg how-pos3-parent">
                 <button class="how-pos3 hov3 trans-04 js-hide-modal1">
-                    <img src="images/icons/icon-close.png" alt="CLOSE">
+                    <img src="/images/icons/icon-close.png" alt="CLOSE">
                 </button>
 
                 <div class="row">
@@ -516,7 +516,7 @@
                                 <div class="slick3 gallery-lb">
                                     <div class="item-slick3" data-thumb="images/product-detail-01.jpg">
                                         <div class="wrap-pic-w pos-relative">
-                                            <img src="images/product-detail-01.jpg" alt="IMG-PRODUCT">
+                                            <img src="/images/product-detail-01.jpg" alt="IMG-PRODUCT">
 
                                             <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
                                                 href="images/product-detail-01.jpg">
@@ -527,7 +527,7 @@
 
                                     <div class="item-slick3" data-thumb="images/product-detail-02.jpg">
                                         <div class="wrap-pic-w pos-relative">
-                                            <img src="images/product-detail-02.jpg" alt="IMG-PRODUCT">
+                                            <img src="/images/product-detail-02.jpg" alt="IMG-PRODUCT">
 
                                             <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
                                                 href="images/product-detail-02.jpg">
@@ -538,7 +538,7 @@
 
                                     <div class="item-slick3" data-thumb="images/product-detail-03.jpg">
                                         <div class="wrap-pic-w pos-relative">
-                                            <img src="images/product-detail-03.jpg" alt="IMG-PRODUCT">
+                                            <img src="/images/product-detail-03.jpg" alt="IMG-PRODUCT">
 
                                             <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
                                                 href="images/product-detail-03.jpg">
@@ -667,19 +667,19 @@
     <!--=======================================================================================
         Add Bootstrap JS and dependencies
     ========-->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="/https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="/https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <!--===============================================================================================-->
-    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
     <!--===============================================================================================-->
-    <script src="vendor/animsition/js/animsition.min.js"></script>
+    <script src="/vendor/animsition/js/animsition.min.js"></script>
     <!--===============================================================================================-->
-    <script src="vendor/bootstrap/js/popper.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/vendor/bootstrap/js/popper.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
     <!--===============================================================================================-->
-    <script src="vendor/select2/select2.min.js"></script>
+    <script src="/vendor/select2/select2.min.js"></script>
     <script>
         $(".js-select2").each(function() {
             $(this).select2({
@@ -689,18 +689,18 @@
         })
     </script>
     <!--===============================================================================================-->
-    <script src="vendor/daterangepicker/moment.min.js"></script>
-    <script src="vendor/daterangepicker/daterangepicker.js"></script>
+    <script src="/vendor/daterangepicker/moment.min.js"></script>
+    <script src="/vendor/daterangepicker/daterangepicker.js"></script>
     <!--===============================================================================================-->
-    <script src="vendor/slick/slick.min.js"></script>
-    <script src="js/slick-custom.js"></script>
+    <script src="/vendor/slick/slick.min.js"></script>
+    <script src="/js/slick-custom.js"></script>
     <!--===============================================================================================-->
-    <script src="vendor/parallax100/parallax100.js"></script>
+    <script src="/vendor/parallax100/parallax100.js"></script>
     <script>
         $('.parallax100').parallax100();
     </script>
     <!--===============================================================================================-->
-    <script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+    <script src="/vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
     <script>
         $('.gallery-lb').each(function() { // the containers for all your galleries
             $(this).magnificPopup({
@@ -714,9 +714,9 @@
         });
     </script>
     <!--===============================================================================================-->
-    <script src="vendor/isotope/isotope.pkgd.min.js"></script>
+    <script src="/vendor/isotope/isotope.pkgd.min.js"></script>
     <!--===============================================================================================-->
-    <script src="vendor/sweetalert/sweetalert.min.js"></script>
+    <script src="/vendor/sweetalert/sweetalert.min.js"></script>
     <script>
         $('.js-addwish-b2').on('click', function(e) {
             e.preventDefault();
@@ -753,7 +753,7 @@
         });
     </script>
     <!--===============================================================================================-->
-    <script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script>
         $('.js-pscroll').each(function() {
             $(this).css('position', 'relative');
@@ -770,7 +770,7 @@
         });
     </script>
     <!--===============================================================================================-->
-    <script src="js/main.js"></script>
+    <script src="/js/main.js"></script>
 
 </body>
 

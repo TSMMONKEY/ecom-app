@@ -12,15 +12,30 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        return view("product.main");
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        dd($request);
+        $validated = $request->validate([
+            "name"=> "required|max:255",
+            "price"=> "required|numeric|min:0", // Changed to ensure price is numeric and non-negative
+            "description"=> "required|max:255",
+            "image"=> "required|file|size:900",
+        ]);
+
+        $product = new Product();
+        $product->name = $validated['name']; // Use validated data
+        $product->price = $validated['price']; // Use validated data
+        $product->paragraph = $validated['description']; // Fixed property name from paragraph to description
+        $product->image = $request->file('image')->store('images'); // Store the image and save the path
+        $product->save();
+
+        return redirect(route("product.manage"));
     }
 
     /**

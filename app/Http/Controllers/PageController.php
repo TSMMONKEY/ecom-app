@@ -16,6 +16,12 @@ class PageController extends Controller
         $products = Product::all(); // Fetch all products
         return view('pages.home', compact('products')); // Pass products to the view
     }
+   
+    public function products()
+    {
+        $products = Product::all(); // Fetch all products
+        return view('pages.products', compact('products')); // Pass products to the view
+    }
 
     /**
      * Show the form for creating a new resource.
