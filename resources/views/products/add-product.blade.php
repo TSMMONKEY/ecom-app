@@ -19,17 +19,35 @@
     </style>
     <form action="{{route('product.store')}}" method="POST" class="form-group" enctype="multipart/form-data">
         @csrf
+        @if ($errors->any()) <!-- Check for errors -->
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error) <!-- Loop through errors -->
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="mb-3">
             <label for="name" class="form-label">Product Name:</label>
-            <input type="text" id="name" name="name" class="form-control" required>
+            <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" required>
+            @if ($errors->has('name')) <!-- Error message for name -->
+                <div class="text-danger">{{ $errors->first('name') }}</div>
+            @endif
         </div>
         <div class="mb-3">
             <label for="price" class="form-label">Price:</label>
-            <input type="number" id="price" name="price" class="form-control" required>
+            <input type="number" id="price" name="price" class="form-control" value="{{ old('price') }}" required>
+            @if ($errors->has('price')) <!-- Error message for price -->
+                <div class="text-danger">{{ $errors->first('price') }}</div>
+            @endif
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">Description:</label>
-            <textarea id="description" name="description" class="form-control" required></textarea>
+            <textarea id="description" name="description" class="form-control" required>{{ old('description') }}</textarea>
+            @if ($errors->has('description')) <!-- Error message for description -->
+                <div class="text-danger">{{ $errors->first('description') }}</div>
+            @endif
         </div>
         <div class="mb-3">
             <label for="image" class="form-label">Product Image:</label>

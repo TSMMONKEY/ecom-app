@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PageController; 
-use App\Http\Controllers\ProductController; 
+use App\Http\Controllers\ProductController;
+use App\Http\Middleware\EnsureIsAdmin; 
 
 use Illuminate\Support\Facades\Route;
 
@@ -10,9 +11,7 @@ Route::get('/', [PageController::class, 'index'])->name('pages.home');
 
 // Removed commented-out routes for clarity
 
-Route::get('/home', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('home');
+Route::get('/home', [ProductController::class, 'index'])->middleware(['auth'])->name('home');
 
 // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -24,9 +23,10 @@ Route::group(['prefix' => 'products'], function () {
     })->name('product.show');
 });
 
-Route::get('/manage-products', function () {
-    return view('products.manage');
-})->name('product.manage');
+Route::group(['middleware' => [EnsureIsAdmin::class, 'auth']], function () {
+    Route::get('/manage-products', [ProductController::class, 'index'])->name('product.manage');
+});
+
 
 Route::get('/add-product', function () {
     return view('products.add-product');
