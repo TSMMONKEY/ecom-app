@@ -23,8 +23,12 @@ Route::group(['prefix' => 'products'], function () {
     })->name('product.show');
 });
 
-Route::group(['middleware' => [EnsureIsAdmin::class, 'auth']], function () {
+Route::group(['middleware' => [ 'auth']], function () {
     Route::get('/manage-products', [ProductController::class, 'index'])->name('product.manage');
+    Route::get('/add-products', [ProductController::class, 'index'])->name('product.add');
+    Route::get('/edit-product/{id}', [ProductController::class, 'edit'])->name('product.edit');
+    Route::post('/edit-product/{id}', [ProductController::class, 'update'])->name('product.update');
+    Route::delete('/delete-product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
 });
 
 

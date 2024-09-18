@@ -106,9 +106,15 @@
                                                     <ul class="dropdown-menu px-2 py-3 ms-sm-n4 ms-n5"
                                                         aria-labelledby="dropdownTable">
                                                         <li><a class="dropdown-item border-radius-md"
-                                                                href="javascript:;">Edit</a></li>
-                                                        <li><a class="dropdown-item border-radius-md"
-                                                                href="javascript:;">Delete</a>
+                                                                href="{{ route('product.edit', $product->id) }}">Edit</a>
+                                                        </li>
+                                                        <li>
+                                                            <form action="{{ route('product.destroy', $product->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button class="dropdown-item border-radius-md" onclick="return confirm('Are You Sure?')">Delete</button>
+                                                        </form>
                                                         </li>
                                                     </ul>
                                                 </div>
