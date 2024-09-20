@@ -5,9 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Auth;
 
-class EnsureIsAdmin
+class BypassCsrfMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,9 +15,10 @@ class EnsureIsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->is_admin) {
-            return $next($request);
+        if ($request->is('webhook')) {
+            \Illuminate\Support\Facades\Cookie::queue(\Illuminate\Support\Facades\Cookie::forget('XSRF-TOKEN'));
         }
-        return redirect("/");
+
+        return $next($request);
     }
 }
