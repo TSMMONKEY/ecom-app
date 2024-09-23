@@ -93,31 +93,31 @@
                         <ul class="main-menu">
                             <li class="active-menu">
                                 <a href="/">Home</a>
-                                <ul class="sub-menu">
+                                {{-- <ul class="sub-menu">
                                     <li><a href="/">Homepage 1</a></li>
                                     <li><a href="home-02.html">Homepage 2</a></li>
                                     <li><a href="home-03.html">Homepage 3</a></li>
-                                </ul>
+                                </ul> --}}
                             </li>
 
                             <li>
-                                <a href="/products">Shop</a>
+                                <a href="#">Shop</a>
                             </li>
 
                             <li class="label1" data-label1="hot">
-                                <a href="shoping-cart.html">Features</a>
+                                <a href="#">Features</a>
                             </li>
 
                             <li>
-                                <a href="blog.html">Blog</a>
+                                <a href="#">Blog</a>
                             </li>
 
                             <li>
-                                <a href="about.html">About</a>
+                                <a href="#">About</a>
                             </li>
 
                             <li>
-                                <a href="contact.html">Contact</a>
+                                <a href="#">Contact</a>
                             </li>
                         </ul>
                     </div>
@@ -206,7 +206,7 @@
             </ul>
 
             <ul class="main-menu-m">
-                <li>
+                {{-- <li>
                     <a href="/">Home</a>
                     <ul class="sub-menu-m">
                         <li><a href="/">Homepage 1</a></li>
@@ -216,26 +216,26 @@
                     <span class="arrow-main-menu-m">
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </span>
+                </li> --}}
+
+                <li>
+                    <a href="#">Shop</a>
                 </li>
 
                 <li>
-                    <a href="/products">Shop</a>
+                    <a href="#" class="label1 rs1" data-label1="hot">Features</a>
                 </li>
 
                 <li>
-                    <a href="shoping-cart.html" class="label1 rs1" data-label1="hot">Features</a>
+                    <a href="#">Blog</a>
                 </li>
 
                 <li>
-                    <a href="blog.html">Blog</a>
+                    <a href="#">About</a>
                 </li>
 
                 <li>
-                    <a href="about.html">About</a>
-                </li>
-
-                <li>
-                    <a href="contact.html">Contact</a>
+                    <a href="#">Contact</a>
                 </li>
             </ul>
         </div>

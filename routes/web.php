@@ -63,7 +63,7 @@ Route::get('/thank-you/{id}', function (Request $request, $id) {
     // Create the order array with actual details for the first email
     $order = [
         'product_name' => $product->name,
-        'amount' => $product->price,
+        'amount' => $product->price * 0.5,
         'currency' => $product->currency,
         'payment_status' => 'Processing',
     ];
