@@ -51,16 +51,11 @@ Route::middleware('auth')->group(function () {
 
 
 Route::get('/thank-you/{id}', function (Request $request, $id) {
-    // Get the logged-in user
     $user = $request->user();
     $product = Product::findOrFail($id);
 
-    // Dispatch the job to charge the remaining amount after 5 minutes
-// Assuming you have the product instance available here
     ChargeRemainingAmount::dispatch($product)->delay(now()->addMinutes(1));
 
-
-    // Create the order array with actual details for the first email
     $order = [
         'product_name' => $product->name,
         'amount' => $product->price * 0.5,
@@ -68,12 +63,16 @@ Route::get('/thank-you/{id}', function (Request $request, $id) {
         'payment_status' => 'Processing',
     ];
 
-    // Send the first email confirmation
-    Mail::to($user->email)->send(new OrderConfirmation($order));
+    try {
+        Mail::to($user->email)->send(new OrderConfirmation($order));
+    } catch (\Exception $e) {
+        \Log::error('Email sending failed: ' . $e->getMessage());
+        return back()->withErrors(['email' => 'Failed to send confirmation email.']);
+    }
 
-    // Show a thank-you page or success message
     return view('checkout.success')->with('success', 'Your initial payment is being processed. A confirmation email has been sent.');
 })->name('thankYou');
+
 
 
 Route::view('/checkout/cancel', 'checkout.cancel')->name('checkout-cancel');
@@ -81,8 +80,6 @@ Route::view('/checkout/cancel', 'checkout.cancel')->name('checkout-cancel');
 // Web hooks
 route::post('/webhook', [StripeWebhookController::class, 'handleWebhook']);
 Route::post('/stripe/webhook', [StripeWebhookController::class, 'handle']);
-// Home Page
-// Route::get('/home', [ProductController::class, 'index'])->middleware(['auth'])->name('home');
 
 
 // Products
@@ -95,6 +92,7 @@ Route::group(['prefix' => 'products'], function () {
 
 // Products Admin
 Route::group(['middleware' => ['auth', EnsureIsAdmin::class]], function () {
+    
     Route::get('/manage-products', [ProductController::class, 'index'])->name('home');
     Route::get('/add-products', [ProductController::class, 'index'])->name('product.add');
     Route::get('/edit-product/{id}', [ProductController::class, 'edit'])->name('product.edit');
@@ -103,11 +101,11 @@ Route::group(['middleware' => ['auth', EnsureIsAdmin::class]], function () {
 });
 
 
-// Route::get('/add-product', function () {
-//     return view('products.add-product');
-// })->name('product.add');
+Route::get('/add-product', function () {
+    return view('products.add-product');
+})->name('product.add');
 
-// Route::post('/add-product', [ProductController::class, 'create'])->name('product.store');
+Route::post('/add-product', [ProductController::class, 'create'])->name('product.store');
 
 // profile
 Route::middleware('auth')->group(function () {

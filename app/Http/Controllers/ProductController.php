@@ -40,6 +40,8 @@ class ProductController extends Controller
             
             // Generate the full image URL
             $imageUrl = url('storage/' . $imagePath);
+            dd($imageUrl);
+            die();
         } else {
             return back()->withErrors(['image' => 'Invalid image upload.']);
         }
