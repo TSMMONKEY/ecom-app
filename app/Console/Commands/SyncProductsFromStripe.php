@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Stripe\Stripe;
-use Stripe\Product;
+use Stripe\Product as StripeProduct;
 use Stripe\Price;
 use App\Models\Product as LocalProduct;
 
@@ -27,34 +27,32 @@ class SyncProductsFromStripe extends Command
         $startingAfter = null;
 
         while ($hasMore) {
-            // Fetch Stripe products in paginated manner
-            $stripeProducts = Product::all([
-                'limit' => 100, // Fetch up to 100 products per request (Stripe's max limit)
+            $stripeProducts = StripeProduct::all([
+                'limit' => 100,
                 'starting_after' => $startingAfter
             ]);
 
             foreach ($stripeProducts->data as $stripeProduct) {
-                // Sync the product to your local database
+                // Update or create the local product only if it exists in Stripe
                 $localProduct = LocalProduct::updateOrCreate(
-                    ['stripe_product_id' => $stripeProduct->id], // Use the Stripe Product ID as a unique key
+                    ['stripe_product_id' => $stripeProduct->id],
                     [
                         'name' => $stripeProduct->name,
-                        'description' => $stripeProduct->description,
-                        'stripe_product_id' => $stripeProduct->id,
+                        'paragraph' => $stripeProduct->description ?? null,
                     ]
                 );
 
-                // Fetch associated prices for the product
+                // Fetch associated prices
                 $prices = Price::all(['product' => $stripeProduct->id]);
 
                 if (!empty($prices->data)) {
-                    // For simplicity, assume only one price per product
+                    // Assuming only one price per product
                     $price = $prices->data[0];
 
-                    // Update or save the stripe_price_id and price
+                    // Update the product with the price information
                     $localProduct->update([
                         'stripe_price_id' => $price->id,
-                        'price' => $price->unit_amount / 100, // Stripe stores price in cents
+                        'price' => $price->unit_amount / 100,
                     ]);
                 }
 
@@ -63,10 +61,11 @@ class SyncProductsFromStripe extends Command
 
             $hasMore = $stripeProducts->has_more;
             if ($hasMore) {
-                $startingAfter = end($stripeProducts->data)->id; // Set the last product ID for pagination
+                $startingAfter = end($stripeProducts->data)->id;
             }
         }
 
         $this->info('Products synchronized successfully.');
     }
+
 }

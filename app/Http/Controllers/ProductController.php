@@ -28,43 +28,61 @@ class ProductController extends Controller
         // Validate the product input
         $validated = $request->validate([
             "name" => "required|max:255",
-            "price" => "required|numeric|min:0", // Ensure price is numeric and non-negative
-            "description" => "required|max:255",
+            "price" => "required|numeric|min:0",
+            "description" => "required|max:255", // Validate description input
             "image" => "required|image|max:2048|mimes:jpeg,png,jpg,svg",
         ]);
-
-        // Create the product instance
-        $product = new Product();
-        $product->name = $validated['name']; // Use validated data
-        $product->catalog = 3; // Set catalog ID (as per your logic)
-        $product->price = $validated['price']; // Use validated data
-        $product->paragraph = $validated['description']; // Fixed property name from paragraph to description
-
+    
         // Check if the uploaded image is valid and store it
         if ($request->file('image')->isValid()) {
-            // Create a unique image name to avoid conflicts
             $imageName = $validated['name'] . '_' . time() . '.' . $request->file('image')->getClientOriginalExtension();
-            $product->image = $request->file('image')->storeAs('images', $imageName, 'public'); // Store the image
+            $imagePath = $request->file('image')->storeAs('images', $imageName, 'public');
+            
+            // Generate the full image URL
+            $imageUrl = url('storage/' . $imagePath);
         } else {
-            // Return an error if the image is invalid
             return back()->withErrors(['image' => 'Invalid image upload.']);
         }
-
-        // Save the product in the database
-        $product->save();
-
-        // OPTIONAL: Sync the product to Stripe
+    
+        // Create the product in Stripe
         try {
-            // Use Artisan to run the stripe:sync-products-to-stripe command after saving the product
-            \Artisan::call('stripe:sync-products-to-stripe');
+            // Set Stripe API key
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+    
+            // Prepare product data
+            $productData = [
+                'name' => $validated['name'],
+                'description' => $validated['description'], // Pass 'description' to Stripe
+            ];
+    
+            // Add the image URL to the product data
+            if (!empty($imageUrl)) {
+                $productData['images'] = [$imageUrl];
+            }
+    
+            // Create Stripe Product
+            $stripeProduct = \Stripe\Product::create($productData);
+    
+            // Create a price for the product
+            $stripePrice = \Stripe\Price::create([
+                'unit_amount' => $validated['price'] * 100, // Convert to cents
+                'currency' => 'usd', // Change currency as needed
+                'product' => $stripeProduct->id,
+            ]);
+    
+            // Sync products from Stripe to your database after creating the product
+            \Artisan::call('stripe:sync-products');
+    
+            // Redirect to the product management page with a success message
+            return redirect(route("home"))->with("success", "Product created in Stripe and synchronized successfully!");
         } catch (\Exception $e) {
-            // Handle potential errors from syncing to Stripe
-            return back()->withErrors(['stripe' => 'Failed to sync product to Stripe: ' . $e->getMessage()]);
+            return back()->withErrors(['stripe' => 'Failed to create product on Stripe: ' . $e->getMessage()]);
         }
-
-        // Redirect to the product management page with a success message
-        return redirect(route("product.manage"))->with("success", "Product created and synchronized with Stripe successfully!");
     }
+    
+    
+    
+
 
 
 
@@ -148,7 +166,7 @@ class ProductController extends Controller
         $product->save();
 
         // Redirect back with a success message
-        return redirect()->route('product.manage')->with('success', 'Product updated successfully!');
+        return redirect()->route('home')->with('success', 'Product updated successfully!');
     }
 
 
@@ -161,6 +179,6 @@ class ProductController extends Controller
 
         $product->delete();
 
-        return redirect()->route('product.manage')->with('success', 'Product Deleted Successfully!');
+        return redirect()->route('home')->with('success', 'Product Deleted Successfully!');
     }
 }

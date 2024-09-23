@@ -15,5 +15,6 @@ class Product extends Model
         'paragraph',
         'price',
         'stripe_product_id', // Add this line
+        'stripe_price_id', // Add this line
     ]; // Specify your actual table name if not 'products'
 }
