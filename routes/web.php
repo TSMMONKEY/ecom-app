@@ -23,7 +23,7 @@ Route::get('/cart/add/{id}', [ProductController::class, 'addToCart'])->name('car
 use Illuminate\Support\Facades\Auth;
 
 Route::middleware('auth')->group(function () {
-    Route::post('/create-checkout-session', [ProductController::class, 'checkout'])->name('checkout');    
+    Route::post('/create-checkout-session/{id}', [ProductController::class, 'checkout'])->name('checkout');    
 
     // Route::get('/checkout/{id}', function (Request $request, $id) {
     //     // Retrieve the product by its ID
@@ -77,11 +77,12 @@ Route::get('/thank-you/{id}', function (Request $request, $id) {
 
 
 
-Route::view('/checkout/cancel', 'checkout.cancel')->name('checkout-cancel');
+Route::get('/checkout/success', [ProductController::class, 'success'])->name('checkout.success');
+Route::view('/checkout/cancel', 'checkout.cancel')->name('checkout.cancel');
 
 // Web hooks
 route::post('/webhook', [StripeWebhookController::class, 'handleWebhook']);
-Route::post('/stripe/webhook', [StripeWebhookController::class, 'handle']);
+Route::post('/webhook/stripe', [ProductController::class, 'handleWebhook']);
 
 
 // Products

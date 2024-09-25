@@ -12,7 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        'stripe/*',  // Exclude all Stripe webhook routes
-        '/webhook',  // Add your specific webhook route here
+        '/stripe/*',  // Exclude all Stripe webhook routes
+        '/webhook/*',  // Add your specific webhook route here
     ];
 }
