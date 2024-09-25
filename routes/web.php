@@ -23,30 +23,32 @@ Route::get('/cart/add/{id}', [ProductController::class, 'addToCart'])->name('car
 use Illuminate\Support\Facades\Auth;
 
 Route::middleware('auth')->group(function () {
-    Route::get('/checkout/{id}', function (Request $request, $id) {
-        // Retrieve the product by its ID
-        $product = Product::findOrFail($id);
+    Route::post('/create-checkout-session', [ProductController::class, 'checkout'])->name('checkout');    
 
-        $stripePriceId = $product->stripe_price_id;
-        $quantity = 1;
+    // Route::get('/checkout/{id}', function (Request $request, $id) {
+    //     // Retrieve the product by its ID
+    //     $product = Product::findOrFail($id);
 
-        // Calculate the amount to charge (50% of the product price)
-        $amountToCharge = $product->price * 0.5 * 100; // Convert to cents
+    //     $stripePriceId = $product->stripe_price_id;
+    //     $quantity = 1;
 
-        // Create a PaymentIntent for the initial charge
-        $paymentIntent = \Stripe\PaymentIntent::create([
-            'amount' => $amountToCharge,
-            'currency' => 'usd', // Adjust as necessary
-            'payment_method_types' => ['card'],
-            // Additional options as needed
-        ]);
+    //     // Calculate the amount to charge (50% of the product price)
+    //     $amountToCharge = $product->price * 0.5 * 100; // Convert to cents
 
-        // Proceed with the checkout
-        return $request->user()->checkout([$stripePriceId => $quantity], [
-            'success_url' => route('thankYou', $id),
-            'cancel_url' => route('checkout-cancel'),
-        ]);
-    })->name('checkout');
+    //     // Create a PaymentIntent for the initial charge
+    //     $paymentIntent = \Stripe\PaymentIntent::create([
+    //         'amount' => $amountToCharge,
+    //         'currency' => 'usd', // Adjust as necessary
+    //         'payment_method_types' => ['card'],
+    //         // Additional options as needed
+    //     ]);
+
+    //     // Proceed with the checkout
+    //     return $request->user()->checkout([$stripePriceId => $quantity], [
+    //         'success_url' => route('thankYou', $id),
+    //         'cancel_url' => route('checkout-cancel'),
+    //     ]);
+    // })->name('checkout');
 });
 
 

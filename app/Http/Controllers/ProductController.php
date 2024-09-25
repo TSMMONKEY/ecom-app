@@ -40,8 +40,7 @@ class ProductController extends Controller
             
             // Generate the full image URL
             $imageUrl = url('storage/' . $imagePath);
-            dd($imageUrl);
-            die();
+
         } else {
             return back()->withErrors(['image' => 'Invalid image upload.']);
         }
@@ -81,12 +80,6 @@ class ProductController extends Controller
             return back()->withErrors(['stripe' => 'Failed to create product on Stripe: ' . $e->getMessage()]);
         }
     }
-    
-    
-    
-
-
-
 
     /**
      * Store a newly created resource in storage.
@@ -182,5 +175,10 @@ class ProductController extends Controller
         $product->delete();
 
         return redirect()->route('home')->with('success', 'Product Deleted Successfully!');
+    }
+
+    public function checkout(Request $request, Product $product, $id)
+    {
+       return view('checkout', compact('product','id'));
     }
 }
