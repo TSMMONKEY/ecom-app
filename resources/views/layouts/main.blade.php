@@ -191,20 +191,26 @@
                         </a>
 
                         @if (Auth::check())
-                       
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: flex;">
-                            @csrf
-                            <button type="submit" class="flex-c-m trans-04 p-lr-25" style="color: #adadad; border-right: 1px solid #ffffff4d;">
-                               logout
-                            </button>
-                        </form>
+                        @if (Auth::user()->is_admin)  <!-- Check if the logged-in user is an admin -->
+                            <form id="dashboard-form" action="{{ route('dashboard') }}" method="GET" style="display: flex;">
+                                @csrf
+                                <button type="submit" class="flex-c-m trans-04 p-lr-25" style="color: #adadad; border-right: 1px solid #ffffff4d;">
+                                    Dashboard
+                                </button>
+                            </form>
                         @else
-
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: flex;">
+                                @csrf
+                                <button type="submit" class="flex-c-m trans-04 p-lr-25" style="color: #adadad; border-right: 1px solid #ffffff4d;">
+                                    Logout
+                                </button>
+                            </form>
+                        @endif
+                    @else
                         <a href="/login" class="flex-c-m trans-04 p-lr-25">
                             Login / Register
                         </a>
-                        
-                        @endif
+                    @endif
 
                         <a href="#" class="flex-c-m p-lr-10 trans-04">
                             EN
