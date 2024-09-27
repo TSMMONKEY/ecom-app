@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'sign-up')
+@section('title', 'Login')
 @section('content')
     <section class="logins" style="margin-top: 4rem">
         <div class="form-structor">

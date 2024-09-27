@@ -65,7 +65,7 @@
                         </form>
                         @else
                         <a href="/login" class="flex-c-m trans-04 p-lr-25">
-                            My Account
+                            Login / Register
                         </a>
                         @endif
                         
@@ -190,9 +190,21 @@
                             Help & FAQs
                         </a>
 
-                        <a href="/login" class="flex-c-m p-lr-10 trans-04">
-                            My Account
+                        @if (Auth::check())
+                       
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: flex;">
+                            @csrf
+                            <button type="submit" class="flex-c-m trans-04 p-lr-25" style="color: #adadad; border-right: 1px solid #ffffff4d;">
+                               logout
+                            </button>
+                        </form>
+                        @else
+
+                        <a href="/login" class="flex-c-m trans-04 p-lr-25">
+                            Login / Register
                         </a>
+                        
+                        @endif
 
                         <a href="#" class="flex-c-m p-lr-10 trans-04">
                             EN

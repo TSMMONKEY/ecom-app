@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
+
 use Illuminate\Http\Request;
 use App\Services\StripeService;
 use App\Mail\OrderConfirmation;
+use App\Jobs\ChargeRemainingAmount;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Foundation\Bus\Dispatchable;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
@@ -185,106 +188,92 @@ class ProductController extends Controller
 
     public function checkout(Request $request, $id)
     {
-        // Retrieve the product using the ID
-        $product = Product::findOrFail($id); // Fetch the product or throw an error if not found
-
+        $product = Product::findOrFail($id);
+        $amount = $product->price * 100; // Amount in cents
+        $halfAmount = $amount / 2;
+    
+        // Use the logged-in user's email
+        $userEmail = auth()->user()->email;
+    
+        // Create a Stripe client
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
-
-        // 
-        // $lineItems = [];
-        $totalPrice = $product->price;
-
-        // Convert product price to cents (Stripe requires price in cents)
-        $unitAmount = (int) ($product->price * 100); // Ensure this is an integer
-
-        // Prepare the line items for the Stripe Checkout session
-        // dd([$product->paragraph, $request->user()->id]);
-
-        $lineItems = [
-            [
+    
+        // Create a customer in Stripe using the user's email
+        $customer = $stripe->customers->create([
+            'email' => $userEmail,
+        ]);
+    
+        // Prepare image data (ensure it's not empty)
+        $images = [];
+        if (!empty($product->image_url)) {
+            $images[] = $product->image_url; // Add only if not empty
+        }
+    
+        // Create a Stripe Checkout session for the first half payment
+        $session = $stripe->checkout->sessions->create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
                 'price_data' => [
                     'currency' => 'usd',
                     'product_data' => [
-                        'name' => $product->name, // Dynamic product name
-                        'description' => $product->paragraph, // Dynamic product name
-                        'images' => !empty($product->image) ? [$product->image] : null, // Ensure it's an array or null
+                        'name' => $product->name,
+                        'images' => $images, // Use the prepared images array
                     ],
-                    'unit_amount' => $unitAmount, // Dynamic product price in cents
+                    'unit_amount' => $halfAmount,
                 ],
-                'quantity' => 1, // You can make quantity dynamic if needed
-            ],
-        ];
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('checkout.cancel'),
+            'customer_email' => auth()->user()->email,
+            
 
-        // Remove images key if it's null
-        if (is_null($lineItems[0]['price_data']['product_data']['images'])) {
-            unset($lineItems[0]['price_data']['product_data']['images']);
-        }
-
-        try {
-            $userEmail = $request->user()->email;
-
-            // Create the Stripe Checkout Session
-            $checkout_session = $stripe->checkout->sessions->create([
-                'line_items' => $lineItems,
-                'mode' => 'payment',
-                'success_url' => route('checkout.success', [], true) . "?session_id={CHECKOUT_SESSION_ID}", // Change to your success URL
-                'cancel_url' => route('checkout.cancel'), // Change to your cancel URL
-                'customer_email' => $userEmail,
-            ]);
-            \Log::info('Creating Stripe Checkout session for product ID: ' . $product->id);
-
-
-            $order = new Order();
-            $order->user_id = auth()->id();
-            $order->status = 'unpaid';
-            $order->total_price = $totalPrice;
-            $order->session_id = $checkout_session->id;
-            $order->save();
-
-            // Redirect to the Stripe Checkout page
-            return redirect($checkout_session->url);
-        } catch (\Stripe\Exception\InvalidRequestException $e) {
-            \Log::error('Stripe Error: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Stripe error: ' . $e->getMessage());
-        } catch (\Exception $e) {
-            \Log::error('General Error: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'An error occurred while processing your request.');
-        }
+        ]);
+    
+        // Store order with half payment status and customer ID
+        $order = Order::create([
+            'session_id' => $session->id,
+            // 'product_id' => $product->id,
+            'user_id' => auth()->id(),
+            'status' => 'half_paid',
+            'total_price' => $product->price,
+            'stripe_customer_id' => $customer->id, // Store the customer ID
+        ]);
+    
+        // Redirect to Stripe Checkout
+        return redirect($session->url);
     }
-
     public function success(Request $request)
     {
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
         $sessionId = $request->get('session_id');
-
+    
         try {
             $session = $stripe->checkout->sessions->retrieve($sessionId);
-            // $customer = $stripe->customers->retrieve($session->customer);
-
-            $order = Order::where('session_id', $session->id)->where('status', 'unpaid')->first();
+            $order = Order::where('session_id', $session->id)->where('status', 'half_paid')->first();
+    
             if (!$order) {
                 throw new NotFoundHttpException();
             }
-            if ($order) {
-                $order->status = 'paid';
-                $order->save();
-
-                try {
-                    // Mail::to(auth()->email())->send(new OrderConfirmation($order));
-                    Mail::to(auth()->user()->email)->send(new OrderConfirmation($order));
-                } catch (\Exception $e) {
-                    \Log::error('Email sending failed: ' . $e->getMessage());
-                    return back()->withErrors(['email' => 'Failed to send confirmation email.']);
-                }
-            }
-
-            // dd($order);
-
+    
+            // Update order status to half_paid (this assumes you want to keep it half_paid for now)
+            $order->status = 'half_paid'; // You can keep this or mark it as paid if you prefer
+            $order->save();
+    
+            // Send first confirmation email
+            Mail::to(auth()->user()->email)->send(new OrderConfirmation($order));
+    
+            // Dispatch job to charge the remaining amount after 5 minutes
+            ChargeRemainingAmount::dispatch($order)->delay(now()->addMinutes(1));
+    
             return view('checkout.success', ['session' => $session]);
         } catch (\Exception $e) {
-            throw new NotFoundHttpException('Bad excess' . $e->getMessage());
+            throw new NotFoundHttpException('Bad excess: ' . $e->getMessage());
         }
     }
+    
+    
 
     public function handleWebhook(Request $request)
     {
@@ -330,5 +319,4 @@ class ProductController extends Controller
 
         return response();
     }
-
 }

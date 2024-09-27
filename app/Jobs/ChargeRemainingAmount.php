@@ -2,63 +2,51 @@
 
 namespace App\Jobs;
 
+use App\Models\Order;
+use Stripe\StripeClient;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderConfirmation;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Stripe\Stripe;
-use Stripe\PaymentIntent;
-use App\Models\Product;
-use App\Mail\PaymentConfirmationMail;
-use Illuminate\Support\Facades\Mail;
 
-class ChargeRemainingAmount implements ShouldQueue
+class ChargeRemainingAmount
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable;
 
-    protected $product;
+    protected $order;
 
-    public function __construct(Product $product)
+    public function __construct(Order $order)
     {
-        $this->product = $product;
+        $this->order = $order;
     }
 
     public function handle()
     {
-        \Log::info('Running ChargeRemainingAmount for product: ' . $this->product->id);
-        
-        Stripe::setApiKey(config('services.stripe.secret'));
-        
+        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+    
+        $remainingAmount = ($this->order->total_price * 100) / 2; // Calculate remaining amount
+    
         try {
-            $paymentMethodId = $this->product->stripe_payment_method_id;
-    
-            if (empty($paymentMethodId)) {
-                \Log::error('Payment method ID is missing for product: ' . $this->product->id);
-                return;
-            }
-    
-            // Calculate the remaining amount (50% of the total price)
-            $remainingAmount = $this->product->price / 2; 
-            \Log::info('Charging remaining amount: $' . $remainingAmount);
-    
-            // Create the PaymentIntent
-            $paymentIntent = \Stripe\PaymentIntent::create([
-                'amount' => $remainingAmount * 100, // Convert to cents
+            // Use the stored Stripe customer ID
+            $charge = $stripe->charges->create([
+                'amount' => $remainingAmount,
                 'currency' => 'usd',
-                'payment_method' => $paymentMethodId,
-                'confirmation_method' => 'manual',
-                'confirm' => true,
+                // 'customer' => $this->order->stripe_customer_id, // Use the stored customer ID
+                'description' => 'Remaining payment for order ' . $this->order->id,
             ]);
     
-            \Log::info('PaymentIntent Response: ', $paymentIntent->toArray());
+            // Update order status to paid
+            $this->order->status = 'paid';
+            $this->order->save();
     
-            if ($paymentIntent->status === 'succeeded') {
-                Mail::to($this->product->user->email)->later(now()->addMinutes(5), new PaymentConfirmationMail($this->product));
-                \Log::info('Confirmation email queued for product: ' . $this->product->id);
-            }
+            // Send second confirmation email
+            Mail::to($this->order->user->email)->send(new OrderConfirmation($this->order));
+    
         } catch (\Exception $e) {
-            \Log::error('Error charging remaining amount: ' . $e->getMessage());
+            \Log::error('Failed to charge remaining amount: ' . $e->getMessage());
         }
     }
     
