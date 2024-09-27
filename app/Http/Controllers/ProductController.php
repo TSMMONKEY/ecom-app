@@ -41,54 +41,51 @@ class ProductController extends Controller
             "description" => "required|max:255", // Validate description input
             "image" => "required|image|max:2048|mimes:jpeg,png,jpg,svg",
         ]);
-
+    
         // Check if the uploaded image is valid and store it
         if ($request->file('image')->isValid()) {
             $imageName = $validated['name'] . '_' . time() . '.' . $request->file('image')->getClientOriginalExtension();
+            // Store the image in the public storage
             $imagePath = $request->file('image')->storeAs('images', $imageName, 'public');
-
-            // Generate the full image URL
-            $imageUrl = url('storage/' . $imagePath);
-
+    
+            // Generate the full image URL for Stripe
+            $imageUrl = url('storage/' . $imagePath); // Generates the URL for the stored image
         } else {
             return back()->withErrors(['image' => 'Invalid image upload.']);
         }
-
+    
         // Create the product in Stripe
         try {
             // Set Stripe API key
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-
+    
             // Prepare product data
             $productData = [
                 'name' => $validated['name'],
                 'description' => $validated['description'], // Pass 'description' to Stripe
+                'images' => [$imageUrl], // Add the generated image URL
             ];
-
-            // Add the image URL to the product data
-            if (!empty($imageUrl)) {
-                $productData['images'] = [$imageUrl];
-            }
-
+    
             // Create Stripe Product
             $stripeProduct = \Stripe\Product::create($productData);
-
+    
             // Create a price for the product
             $stripePrice = \Stripe\Price::create([
                 'unit_amount' => $validated['price'] * 100, // Convert to cents
                 'currency' => 'usd', // Change currency as needed
                 'product' => $stripeProduct->id,
             ]);
-
+    
             // Sync products from Stripe to your database after creating the product
             \Artisan::call('stripe:sync-products');
-
+    
             // Redirect to the product management page with a success message
             return redirect(route("home"))->with("success", "Product created in Stripe and synchronized successfully!");
         } catch (\Exception $e) {
             return back()->withErrors(['stripe' => 'Failed to create product on Stripe: ' . $e->getMessage()]);
         }
     }
+    
 
     /**
      * Store a newly created resource in storage.
