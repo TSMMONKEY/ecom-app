@@ -192,7 +192,7 @@
 
                         @if (Auth::check())
                         @if (Auth::user()->is_admin)  <!-- Check if the logged-in user is an admin -->
-                            <form id="dashboard-form" action="{{ route('dashboard') }}" method="GET" style="display: flex;">
+                            <form id="dashboard-form" action="{{ route('/home') }}" method="GET" style="display: flex;">
                                 @csrf
                                 <button type="submit" class="flex-c-m trans-04 p-lr-25" style="color: #adadad; border-right: 1px solid #ffffff4d;">
                                     Dashboard
