@@ -13,7 +13,7 @@
                         <x-input-error :messages="$errors->get('name')" class="mt-2 text-danger" />
 
                         <!-- Email Address -->
-                        <input type="email" class="input" id="email" placeholder="Email" name="email" :value="old('email')" required autocomplete="username"/>
+                        <input type="email" class="input" id="email" placeholder="Email" name="email" :value="old('email')" required autocomplete="on"/>
                         <x-input-error :messages="$errors->get('email')" class="mt-2 text-danger" />
 
                          <!-- Password -->
@@ -37,12 +37,12 @@
                         <div class="form-holder">
                             <!-- Email Address -->
                             <input id="email" type="email" class="input" placeholder="Email" name="email"
-                                :value="old('email')" required autofocus autocomplete="username" />
+                                :value="old('email')" required autofocus autocomplete="on" />
                             <x-input-error :messages="$errors->get('email')" class="mt-2 text-danger" />
 
                             <!-- Password -->
                             <input type="password" class="input" id="password" placeholder="Password" name="password"
-                                required autocomplete="current-password" />
+                                required autocomplete="on" />
                             <x-input-error :messages="$errors->get('password')" class="mt-2 text-danger" />
                         </div>
                         <button class="submit-btn">Log in</button>

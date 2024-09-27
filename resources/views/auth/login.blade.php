@@ -11,12 +11,12 @@
                         <div class="form-holder">
                             <!-- Email Address -->
                             <input id="email" type="email" class="input" placeholder="Email" name="email"
-                                :value="old('email')" required autofocus autocomplete="username" />
+                                :value="old('email')" required autofocus autocomplete="on" />
                             <x-input-error :messages="$errors->get('email')" class="mt-2 text-danger" />
 
                             <!-- Password -->
                             <input type="password" class="input" id="password" placeholder="Password" name="password"
-                                required autocomplete="current-password" />
+                                required autocomplete="on" />
                             <x-input-error :messages="$errors->get('password')" class="mt-2 text-danger" />
                         </div>
                         <button class="submit-btn">Log in</button>
@@ -33,7 +33,7 @@
                         <x-input-error :messages="$errors->get('name')" class="mt-2 text-danger" />
 
                         <!-- Email Address -->
-                        <input type="email" class="input" id="email" placeholder="Email" name="email" :value="old('email')" required autocomplete="username"/>
+                        <input type="email" class="input" id="email" placeholder="Email" name="email" :value="old('email')" required autocomplete="on"/>
                         <x-input-error :messages="$errors->get('email')" class="mt-2 text-danger" />
 
                          <!-- Password -->
@@ -76,7 +76,7 @@
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
-                required autofocus autocomplete="username" />
+                required autofocus autocomplete="on" />
             <x-input-error :messages="$errors->get('email')" class="mt-2 danger" />
         </div>
 
@@ -85,7 +85,7 @@
             <x-input-label for="password" :value="__('Password')" />
 
             <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                autocomplete="current-password" />
+                autocomplete="on" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2 danger" />
         </div>
