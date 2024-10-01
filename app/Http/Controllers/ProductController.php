@@ -44,7 +44,8 @@ class ProductController extends Controller
     
         // Check if the uploaded image is valid and store it
         if ($request->file('image')->isValid()) {
-            $imageName = $validated['name'] . '_' . time() . '.' . $request->file('image')->getClientOriginalExtension();
+            // Replace spaces with underscores in the product name
+            $imageName = str_replace(' ', '_', $validated['name']) . '_' . time() . '.' . $request->file('image')->getClientOriginalExtension();
             // Store the image in the public storage
             $imagePath = $request->file('image')->storeAs('images', $imageName, 'public');
     
@@ -53,7 +54,7 @@ class ProductController extends Controller
         } else {
             return back()->withErrors(['image' => 'Invalid image upload.']);
         }
-    
+    // dd($imageUrl);
         // Create the product in Stripe
         try {
             // Set Stripe API key
