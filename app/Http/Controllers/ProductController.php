@@ -54,7 +54,7 @@ class ProductController extends Controller
         } else {
             return back()->withErrors(['image' => 'Invalid image upload.']);
         }
-    // dd($imageUrl);
+    dd($imageUrl);
         // Create the product in Stripe
         try {
             // Set Stripe API key
